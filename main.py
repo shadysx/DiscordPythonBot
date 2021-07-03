@@ -139,4 +139,4 @@ async def get_members(ctx):
         print(user)
 
 
-bot.run('ODU5ODgyOTQ0MzgxMDU5MTQy.YNzKZQ.ym3885CbmveCf1Cn9-_BwIjbgR4')
+bot.run('ODU5ODgyOTQ0MzgxMDU5MTQy.YNzKZQ.chQDu3fz-85JCSqrVWr73RJXnd4')
