@@ -1,4 +1,5 @@
 import discord
+import random
 from datetime import datetime, timedelta, date
 from discord.ext import commands
 import requests
@@ -41,7 +42,22 @@ async def on_voice_state_update(member, before, after):
         await after.channel.connect()
         print(member, before, after)
         voice = discord.utils.get(bot.voice_clients)
-        voice.play(discord.FFmpegPCMAudio("song.mp3"))
+        
+        time.sleep(1)
+
+        rand = random.randint(1,5)
+
+        if rand == 1:
+            voice.play(discord.FFmpegPCMAudio("song1.mp3"))
+        if rand == 2:
+            voice.play(discord.FFmpegPCMAudio("song2.mp3"))
+        if rand == 3
+            voice.play(discord.FFmpegPCMAudio("song3.mp3"))
+        if rand == 4:
+            voice.play(discord.FFmpegPCMAudio("song4.mp3"))
+        if rand == 5:
+            voice.play(discord.FFmpegPCMAudio("song5.mp3"))
+
         time.sleep(5)
         await voice.disconnect()
 
@@ -140,3 +156,8 @@ async def get_members(ctx):
 
 
 bot.run('ODU5ODgyOTQ0MzgxMDU5MTQy.YNzKZQ.chQDu3fz-85JCSqrVWr73RJXnd4')
+
+
+
+
+
