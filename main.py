@@ -4,12 +4,22 @@ from discord.ext import commands
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+import time
 import json
+import nacl
+import youtube_dl
 
-bot = commands.Bot(command_prefix='.')
+#Permissions
+intents = discord.Intents.default()
+intents.members = True
+intents.typing = True
+intents.presences = True
+#Init
+bot = commands.Bot(command_prefix='.', intents=intents)
+
+
 
 bot.remove_command('help')
-
 
 @bot.command()
 async def Help(ctx):
@@ -23,6 +33,19 @@ async def Help(ctx):
 @bot.command()
 async def ping(ctx):
     await ctx.send('pong')
+    print(ctx.guild)
+    
+@bot.event
+async def on_voice_state_update(member, before, after):
+    if not before.channel and after.channel:
+        await after.channel.connect()
+        print(member, before, after)
+        voice = discord.utils.get(bot.voice_clients)
+        voice.play(discord.FFmpegPCMAudio("song.mp3"))
+        time.sleep(5)
+        await voice.disconnect()
+
+
 
 @bot.command(name = 'Clear', help="Cette fonction supprime 5 messages mais peut en supprimer jusqu'a 100: .Clear <nombre_de_messages>")
 async def Clear(ctx, amount = 5):
@@ -97,4 +120,23 @@ def KelvinToCelcius(kTemp):
         cTemp = kTemp - 273.15
         return cTemp
 
-bot.run('ODU5ODgyOTQ0MzgxMDU5MTQy.YNzKZQ.eO7CYpw2RHkR7bkmp4l5z-gRrvY')
+@bot.command()
+async def Join(ctx):
+    channel = ctx.author.voice.channel
+    await channel.connect()
+    voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
+    voice.play(discord.FFmpegPCMAudio("song.mp3"))
+
+@bot.command()
+async def Leave(ctx):
+    await ctx.voice_client.disconnect()
+
+@bot.command()
+async def get_members(ctx):
+    await ctx.message.delete()
+
+    for user in list(ctx.guild.members):
+        print(user)
+
+
+bot.run('ODU5ODgyOTQ0MzgxMDU5MTQy.YNzKZQ.ym3885CbmveCf1Cn9-_BwIjbgR4')
