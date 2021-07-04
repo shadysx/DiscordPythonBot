@@ -8,14 +8,20 @@ from datetime import datetime
 import time
 import json
 import nacl
+import sqlite3
 
 #Permissions
 intents = discord.Intents.default()
 intents.members = True
 intents.typing = True
 intents.presences = True
+
 #Init
 bot = commands.Bot(command_prefix='.', intents=intents)
+
+#Database related stuff
+conn = sqlite3.connect('members.db') #CHANGE THE SELECT RETURN RESULT TO OBJECT THAT CAN BE ACCESSED LIKE A DICT (WITH LOOP)
+c = conn.cursor()
 
 bot.remove_command('help')
 
@@ -138,6 +144,7 @@ async def Meteo(ctx, search: str, date: str):
             resp = f'{timeExtract}, {round(KelvinToCelcius(list_[x]["main"]["temp"]),2)} C°'
             await ctx.send(resp) 
 
+
 def DateConverter(date):
     temp = date.split("/")
     day = "{:02d}".format(int(temp[0]))
@@ -150,16 +157,17 @@ def KelvinToCelcius(kTemp):
         cTemp = kTemp - 273.15
         return cTemp
 
+
 @bot.command()
 async def Join(ctx):
     channel = ctx.author.voice.channel
     await channel.connect()
-    voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
-    voice.play(discord.FFmpegPCMAudio("song.mp3"))
+
 
 @bot.command()
 async def Leave(ctx):
     await ctx.voice_client.disconnect()
+
 
 @bot.command()
 async def get_members(ctx):
@@ -168,6 +176,36 @@ async def get_members(ctx):
     for user in list(ctx.guild.members):
         print(user)
 
+@bot.event
+async def on_message(message):
+    print(f"{message.author} gagne un point de score")
+    id_ = (message.author.id)
+    c.execute("UPDATE members set score = score + 1 WHERE id=?", (id_,)) 
 
-bot.run('ODU5ODgyOTQ0MzgxMDU5MTQy.YNzKZQ.iRhqmnLUtypvGUxZxzz46mDoup0')
+    conn.commit()
+
+    #CETTE LIGNE PERMET DE NE PAS DEMONTER MON PROGRAMME CAR QUAND ON UTILISE SOIS MEME ON MESSAGE CEST LE BORDEL (VOIR STACK OVERFLOW)
+    await bot.process_commands(message) 
+
+@bot.command()
+async def Ranks(ctx):
+    c.execute("SELECT * FROM members order by score desc LIMIT 5")
+    res = c.fetchall()
+    await ctx.send("Classement des membres (Messages Envoyés)")
+    for member in range(len(res)):
+        temp = f"{member+1}: {res[member][1]} {res[member][2]} messages" 
+        await ctx.send(temp)
+
+@bot.command()
+async def MembersInit(ctx):
+    
+    membersList = (ctx.guild.members)
+    for member in membersList:
+        print(member.id, member.name)
+        c.execute("INSERT INTO members VALUES(?, ?, 0)", (member.id, member.name))
+
+    conn.commit()
+
+
+bot.run('ODU5ODgyOTQ0MzgxMDU5MTQy.YNzKZQ.7ENYsnCeqyHPWqsjqSETbLy6xSc')
 
