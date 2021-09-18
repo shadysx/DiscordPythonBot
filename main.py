@@ -1,4 +1,5 @@
 import discord
+import ffmpeg
 import random
 from datetime import datetime, timedelta, date
 from discord.ext import commands
@@ -207,5 +208,5 @@ async def MembersInit(ctx):
     conn.commit()
 
 
-bot.run('ODU5ODgyOTQ0MzgxMDU5MTQy.YNzKZQ.7ENYsnCeqyHPWqsjqSETbLy6xSc')
+bot.run('ODU5ODgyOTQ0MzgxMDU5MTQy.YNzKZQ.rAYNh4O5Jxrnl4oP7QD48uT47-g')
 
