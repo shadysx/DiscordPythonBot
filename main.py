@@ -46,33 +46,10 @@ async def on_voice_state_update(member, before, after):
         await after.channel.connect()
         voice = discord.utils.get(bot.voice_clients)
         
-        time.sleep(1)
+        time.sleep(3)
 
-        if str(member) == 'ShadySX#1828':
-            voice.play(discord.FFmpegPCMAudio("vocals/shady.mp3"))
-        elif str(member) == 'Irwinn#6787':
-            voice.play(discord.FFmpegPCMAudio("vocals/irwin.mp3"))
-        elif str(member) == 'MaBa#5713':
-            voice.play(discord.FFmpegPCMAudio("vocals/norrix.mp3"))
-        elif str(member) == 'Fontaine#2755':
-            voice.play(discord.FFmpegPCMAudio("vocals/fontaine.mp3"))
-        elif str(member) == '𝚎𝚊𝚉𝚈#6044':
-            voice.play(discord.FFmpegPCMAudio("vocals/eazy.mp3"))
-        elif str(member) == 'MaBa#5713':
-            voice.play(discord.FFmpegPCMAudio("vocals/irwin.mp3"))
+        voice.play(discord.FFmpegPCMAudio("vocals/waza.mp3"))
 
-        else: 
-            rand = random.randint(1,5)
-            if rand == 1:
-                voice.play(discord.FFmpegPCMAudio("vocals/song1.mp3"))
-            if rand == 2:
-                voice.play(discord.FFmpegPCMAudio("vocals/song2.mp3"))
-            if rand == 3:
-                voice.play(discord.FFmpegPCMAudio("vocals/song3.mp3"))
-            if rand == 4:
-                voice.play(discord.FFmpegPCMAudio("vocals/song4.mp3"))
-            if rand == 5:
-                voice.play(discord.FFmpegPCMAudio("vocals/song5.mp3"))
 
 
         #CODE QUI PERMET DE SEND UN MESSAGE SANS CTX 
